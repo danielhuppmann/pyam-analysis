@@ -1732,6 +1732,7 @@ class IamDataFrame(object):
 
         see pyam.plotting.line_plot() for all available options
         """
+        #TODO merge with `plotting.lineplot`
         df = self.as_pandas(meta_cols=mpl_args_to_meta_cols(self, **kwargs))
 
         # pivot data if asked for explicit variable name
@@ -1752,7 +1753,7 @@ class IamDataFrame(object):
             if x != 'year' and y != 'year':
                 df = df.drop('year', axis=1)  # years causes nan's
 
-        ax, handles, labels = plotting.lineplot(df.dropna(), x=x, y=y, **kwargs)
+        ax, handles, labels = plotting.line(df.dropna(), x=x, y=y, **kwargs)
         return ax
 
     def stack_plot(self, *args, **kwargs):
@@ -1762,35 +1763,18 @@ class IamDataFrame(object):
 
     def bar_plot(self, *args, **kwargs):
         """Deprecated, please use `IamDataFrame.plot.bar()`"""
-        deprecation_warning('Please use `barplot()`.')
+        deprecation_warning('Please use `plot.bar()`.')
         return self.plot.bar(*args, **kwargs)
 
     def boxplot(self, *args, **kwargs):
-        """Plot boxplot of existing data
-
-        see pyam.plotting.boxplot() for all available options
-        """
-        df = self.as_pandas()
-        ax = plotting.boxplot(df, *args, **kwargs)
-        return ax
+        """Deprecated, please use `IamDataFrame.plot.box()`"""
+        deprecation_warning('Please use `IamDataFrame.plot.box()`.')
+        return self.plot.box(**kwargs)
 
     def pie_plot(self, *args, **kwargs):
-        """Plot a pie chart
-
-        see pyam.plotting.pie_plot() for all available options
-        """
-        # TODO: select only relevant meta columns
-        df = self.as_pandas()
-        ax = plotting.pie_plot(df, *args, **kwargs)
-        return ax
-
-    def sankey(self, mapping):
-        """Plot a sankey diagram
-
-        See `pyam.figures.sankey <plotting.html#pyam.plotting.stackplot>`_
-        for details.
-        """
-        return figures.sankey(self, mapping)
+        """Deprecated, please use `IamDataFrame.plot.pie()`"""
+        deprecation_warning('Please use `IamDataFrame.plot.pie()`.')
+        return self.plot.pie(*args, **kwargs)
 
     def scatter(self, x, y, **kwargs):
         """Plot a scatter chart using meta indicators as columns
