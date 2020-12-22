@@ -25,7 +25,6 @@ try:
 except (ImportError, AttributeError):
     has_ix = False
 
-from pyam import figures
 from pyam import plotting
 from pyam.run_control import run_control
 from pyam.utils import (
@@ -1753,8 +1752,7 @@ class IamDataFrame(object):
             if x != 'year' and y != 'year':
                 df = df.drop('year', axis=1)  # years causes nan's
 
-        ax, handles, labels = plotting.line_plot(
-            df.dropna(), x=x, y=y, **kwargs)
+        ax, handles, labels = plotting.lineplot(df.dropna(), x=x, y=y, **kwargs)
         return ax
 
     def stack_plot(self, *args, **kwargs):
