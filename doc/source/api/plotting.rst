@@ -66,7 +66,7 @@ to the RunControl.
 Plotting functions
 ------------------
 
-.. autofunction:: pyam.plotting.lineplot
+.. autofunction:: pyam.plotting.line
 
 .. autofunction:: pyam.plotting.stack
 

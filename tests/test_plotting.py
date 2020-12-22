@@ -300,34 +300,30 @@ def test_barplot_rc(plot_df):
 @pytest.mark.mpl_image_compare(**MPL_KWARGS)
 def test_boxplot(plot_df):
     fig, ax = plt.subplots(figsize=(8, 8))
-    plot_df.boxplot(ax=ax)
+    plot_df.plot.box(ax=ax)
     return fig
 
 
 @pytest.mark.mpl_image_compare(**MPL_KWARGS)
 def test_boxplot_hue(plot_df):
     fig, ax = plt.subplots(figsize=(8, 8))
-    plot_df.boxplot(ax=ax, by='model')
+    plot_df.plot.box(ax=ax, by='model')
     return fig
 
 
 @pytest.mark.mpl_image_compare(**MPL_KWARGS)
 def test_pie_plot_labels(plot_df):
     fig, ax = plt.subplots(figsize=(8, 8))
-    (plot_df
-     .filter(variable='Primary Energy', model='test_model', year=2010)
-     .pie_plot(ax=ax, category='scenario')
-     )
+    plot_df.filter(variable='Primary Energy', model='test_model', year=2010)\
+        .plot.pie(ax=ax, category='scenario')
     return fig
 
 
 @pytest.mark.mpl_image_compare(**MPL_KWARGS)
 def test_pie_plot_legend(plot_df):
     fig, ax = plt.subplots(figsize=(8, 8))
-    (plot_df
-     .filter(variable='Primary Energy', model='test_model', year=2010)
-     .pie_plot(ax=ax, category='scenario', labels=None, legend=True)
-     )
+    plot_df.filter(variable='Primary Energy', model='test_model', year=2010)\
+        .plot.pie(ax=ax, category='scenario', labels=None, legend=True)
     return fig
 
 
@@ -335,9 +331,10 @@ def test_pie_plot_legend(plot_df):
 def test_pie_plot_other(plot_df):
     fig, ax = plt.subplots(figsize=(8, 8))
     with update_run_control(RC_TEST_DICT):
-        (plot_df
-         .filter(variable='Primary Energy', model='test_model', year=2010)
-         .pie_plot(ax=ax, category='scenario', cmap='viridis', title='foo')
+        (
+            plot_df
+            .filter(variable='Primary Energy', model='test_model', year=2010)
+            .plot.pie(ax=ax, category='scenario', cmap='viridis', title='foo')
          )
     return fig
 
@@ -345,21 +342,20 @@ def test_pie_plot_other(plot_df):
 @pytest.mark.mpl_image_compare(**MPL_KWARGS)
 def test_stackplot(plot_df):
     fig, ax = plt.subplots(figsize=(8, 8))
-    (plot_df
-     .filter(variable='Primary Energy', model='test_model')
-     .plot.stack(ax=ax, stack='scenario')
-     )
+    plot_df.filter(variable='Primary Energy', model='test_model')\
+        .plot.stack(ax=ax, stack='scenario')
     return fig
 
 
 @pytest.mark.mpl_image_compare(**MPL_KWARGS)
 def test_stackplot_order_by_list(plot_df):
     fig, ax = plt.subplots(figsize=(8, 8))
-    (plot_df
-     .filter(variable='Primary Energy', model='test_model')
-     .plot.stack(ax=ax, stack='scenario',
-                 order=['test_scenario1', 'test_scenario'])
-     )
+    (
+        plot_df
+        .filter(variable='Primary Energy', model='test_model')
+        .plot.stack(ax=ax, stack='scenario',
+                    order=['test_scenario1', 'test_scenario'])
+    )
     return fig
 
 
@@ -368,10 +364,8 @@ def test_stackplot_order_by_rc(plot_df):
     fig, ax = plt.subplots(figsize=(8, 8))
     scen_list = ['test_scenario1']  # first list from rc, then alphabetical
     with update_run_control({'order': {'scenario': scen_list}}):
-        (plot_df
-         .filter(variable='Primary Energy', model='test_model')
-         .plot.stack(ax=ax, stack='scenario')
-         )
+        plot_df.filter(variable='Primary Energy', model='test_model')\
+            .plot.stack(ax=ax, stack='scenario')
     return fig
 
 
@@ -379,11 +373,8 @@ def test_stackplot_order_by_rc(plot_df):
 def test_stackplot_other(plot_df):
     fig, ax = plt.subplots(figsize=(8, 8))
     with update_run_control({'color': {'scenario': {'test_scenario': 'black'}}}):
-        (
-            plot_df
-            .filter(variable='Primary Energy', model='test_model')
+        plot_df.filter(variable='Primary Energy', model='test_model')\
             .plot.stack(ax=ax, stack='scenario', cmap='viridis', title='foo')
-        )
     return fig
 
 
@@ -407,7 +398,7 @@ def test_stackplot_negative():
 @pytest.mark.mpl_image_compare(**MPL_KWARGS)
 def test_scatter(plot_df):
     fig, ax = plt.subplots(figsize=(8, 8))
-    plot_df.scatter(ax=ax, x='Primary Energy', y='Primary Energy|Coal')
+    plot_df.plot.scatter(ax=ax, x='Primary Energy', y='Primary Energy|Coal')
     return fig
 
 
@@ -424,16 +415,16 @@ def test_scatter_variables_with_meta_color(plot_df):
         criteria={'Primary Energy': {'lo': 5, 'year': 2010}},
         color='red'
     )
-    plot_df.scatter(ax=ax, x='Primary Energy', y='Primary Energy|Coal',
-                    color='foo')
+    plot_df.plot.scatter(ax=ax, x='Primary Energy', y='Primary Energy|Coal',
+                         color='foo')
     return fig
 
 
 @pytest.mark.mpl_image_compare(**MPL_KWARGS)
 def test_scatter_with_lines(plot_df):
     fig, ax = plt.subplots(figsize=(8, 8))
-    plot_df.scatter(ax=ax, x='Primary Energy', y='Primary Energy|Coal',
-                    with_lines=True)
+    plot_df.plot.scatter(ax=ax, x='Primary Energy', y='Primary Energy|Coal',
+                         with_lines=True)
     return fig
 
 
@@ -444,7 +435,7 @@ def test_scatter_meta(plot_df):
                      .timeseries()[2010], name='Total')
     plot_df.set_meta(meta=plot_df.filter(variable='Primary Energy|Coal')
                      .timeseries()[2010], name='Coal')
-    plot_df.scatter(ax=ax, x='Total', y='Coal')
+    plot_df.plot.scatter(ax=ax, x='Total', y='Coal')
     return fig
 
 
@@ -472,22 +463,15 @@ def test_stackplot_negative_emissions_with_total(plot_stackplot_df):
 @pytest.mark.mpl_image_compare(**MPL_KWARGS)
 def test_stackplot_negative_emissions_kwargs_def_total(plot_stackplot_df):
     fig, ax = plt.subplots(figsize=(8, 8))
-    plot_stackplot_df.plot.stack(
-        alpha=0.5,
-        total=True,
-        ax=ax,
-    )
+    plot_stackplot_df.plot.stack(ax=ax, alpha=0.5, total=True)
     return fig
 
 
 @pytest.mark.mpl_image_compare(**MPL_KWARGS)
 def test_stackplot_negative_emissions_kwargs_custom_total(plot_stackplot_df):
     fig, ax = plt.subplots(figsize=(8, 8))
-    plot_stackplot_df.plot.stack(
-        alpha=0.5,
-        total={"color": "grey", "ls": "--", "lw": 2.0},
-        ax=ax,
-    )
+    total = {"color": "grey", "ls": "--", "lw": 2.0}
+    plot_stackplot_df.plot.stack(ax=ax, alpha=0.5, total=total)
     return fig
 
 

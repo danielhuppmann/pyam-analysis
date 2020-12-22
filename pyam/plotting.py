@@ -12,9 +12,11 @@ from collections.abc import Iterable
 
 from pyam.logging import deprecation_warning
 from pyam.run_control import run_control
+from pyam import figures
 from pyam.timeseries import cross_threshold
 from pyam.utils import META_IDX, IAMC_IDX, SORT_IDX, isstr, islistable,\
     _raise_data_error
+
 
 # TODO: this is a hotfix for changes in pandas 0.25.0, per discussions on the
 # pandas-dev listserv, we should try to ask if matplotlib would make it a
@@ -71,17 +73,37 @@ PYAM_COLORS = {
 
 
 class PlotAccessor():
+    """Make plots of IamDataFrame instances"""
     def __init__(self, df):
         self._parent = df
 
-    def __call__(self, kind, *args, **kwargs):
-        return getattr(self, kind, **kwargs)()
+    def __call__(self, kind='line', *args, **kwargs):
+        return getattr(self, kind)(**kwargs)
+
+    def line(self, **kwargs):
+        self._parent.line_plot(**kwargs)
 
     def bar(self, **kwargs):
         return bar(self._parent, **kwargs)
 
     def stack(self, **kwargs):
         return stack(self._parent, **kwargs)
+
+    def hist(self, **kwargs):
+        raise NotImplementedError('Histogram plot not implemented yet!')
+
+    def box(self, **kwargs):
+        return box(self._parent, kwargs)
+
+    def pie(self, **kwargs):
+        return pie(self._parent, **kwargs)
+
+    def scatter(self, **kwargs):
+        return self._parent.scatter(**kwargs)
+
+    def sankey(self, **kwargs):
+        return figures.sankey(self._parent, **kwargs)
+
 
 def reset_default_props(**kwargs):
     """Reset properties to initial cycle point"""
@@ -528,11 +550,11 @@ def boxplot(df, y='value', x='year', by=None,
         The column for grouping y-axis values at each x-axis point, i.e. a 3rd
         dimension.
         Data should be categorical, not a contiuous variable
-    ax : matplotlib.Axes, optional
     legend : bool, optional
         Include a legend
     title : bool or string, optional
         Display a default or custom title
+    ax : matplotlib.Axes, optional
     kwargs : Additional arguments to pass to the pd.DataFrame.plot()
     """
     if by:
@@ -696,10 +718,10 @@ def scatter(df, x, y, ax=None, legend=None, title=None,
     return ax
 
 
-def lineplot(df, x='year', y='value', ax=None, legend=None, title=True,
-             color=None, marker=None, linestyle=None, cmap=None,
-             fill_between=None, final_ranges=None,
-             rm_legend_label=[], **kwargs):
+def line(df, x='year', y='value', legend=None, title=True,
+         color=None, marker=None, linestyle=None,
+         fill_between=None, final_ranges=None,
+         rm_legend_label=[], ax=None, cmap=None, **kwargs):
     """Plot data as lines with or without markers.
 
     Parameters
