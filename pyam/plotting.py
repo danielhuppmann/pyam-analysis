@@ -70,6 +70,16 @@ PYAM_COLORS = {
 }
 
 
+class PlotAccessor():
+    def __init__(self, df):
+        self._parent = df
+
+    def __call__(self, kind, *args, **kwargs):
+        return getattr(self, kind, **kwargs)()
+
+    def bar(self, **kwargs):
+        return bar(self._parent, **kwargs)
+
 def reset_default_props(**kwargs):
     """Reset properties to initial cycle point"""
     global _DEFAULT_PROPS
@@ -405,9 +415,9 @@ def stackplot(df, x='year', y='value', stack='variable', order=None,
     return ax
 
 
-def barplot(df, x='year', y='value', bars='variable', order=None,
-            bars_order=None, ax=None, orient='v', legend=True, title=True,
-            cmap=None, **kwargs):
+def bar(df, x='year', y='value', bars='variable', order=None, bars_order=None,
+        ax=None, orient='v', legend=True, title=True,
+        cmap=None, **kwargs):
     """Plot data as a stacked or grouped bar chart
 
     Parameters

@@ -54,7 +54,7 @@ from pyam.utils import (
 )
 from pyam.read_ixmp import read_ix
 from pyam.timeseries import fill_series
-from pyam.plotting import mpl_args_to_meta_cols
+from pyam.plotting import PlotAccessor, mpl_args_to_meta_cols
 from pyam._aggregate import _aggregate, _aggregate_region, _aggregate_time,\
     _aggregate_recursive, _group_and_agg
 from pyam.units import convert_unit
@@ -183,6 +183,9 @@ class IamDataFrame(object):
         # execute user-defined code
         if 'exec' in run_control():
             self._execute_run_control()
+
+        # add the `plot` handler
+        self.plot = PlotAccessor(self)
 
     def __getitem__(self, key):
         _key_check = [key] if isstr(key) else key
@@ -1767,18 +1770,10 @@ class IamDataFrame(object):
         deprecation_warning('Please use `stackplot()`.')
         return self.stackplot(*args, **kwargs)
 
-    def barplot(self, *args, **kwargs):
-        """Plot a grouped or stacked bar chart
-
-        See `pyam.plotting.barplot <plotting.html#pyam.plotting.barplot>`_
-        for details.
-        """
-        return plotting.barplot(self, *args, **kwargs)
-
     def bar_plot(self, *args, **kwargs):
-        """Deprecated, please use `IamDataFrame.barplot()`"""
+        """Deprecated, please use `IamDataFrame.plot.bar()`"""
         deprecation_warning('Please use `barplot()`.')
-        return self.barplot(*args, **kwargs)
+        return self.plot.bar(*args, **kwargs)
 
     def boxplot(self, *args, **kwargs):
         """Plot boxplot of existing data
