@@ -20,7 +20,7 @@ There are three ways to use the |pyam| plotting library.
 
       IamDataFrame.plot(kind='<kind>', **kwargs)
 
-    This function defaults to the :meth:`pyam.plotting.line` type.
+   This function defaults to the :meth:`pyam.plotting.lineplot` type.
 
 3. Calling any function of either the :mod:`plotting`
    or the :mod:`figures` module directly via
@@ -66,7 +66,7 @@ to the RunControl.
 Plotting functions
 ------------------
 
-.. autofunction:: pyam.plotting.line
+.. autofunction:: pyam.plotting.lineplot
 
 .. autofunction:: pyam.plotting.stack
 

@@ -696,10 +696,10 @@ def scatter(df, x, y, ax=None, legend=None, title=None,
     return ax
 
 
-def line_plot(df, x='year', y='value', ax=None, legend=None, title=True,
-              color=None, marker=None, linestyle=None, cmap=None,
-              fill_between=None, final_ranges=None,
-              rm_legend_label=[], **kwargs):
+def lineplot(df, x='year', y='value', ax=None, legend=None, title=True,
+             color=None, marker=None, linestyle=None, cmap=None,
+             fill_between=None, final_ranges=None,
+             rm_legend_label=[], **kwargs):
     """Plot data as lines with or without markers.
 
     Parameters
