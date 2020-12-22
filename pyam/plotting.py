@@ -80,6 +80,9 @@ class PlotAccessor():
     def bar(self, **kwargs):
         return bar(self._parent, **kwargs)
 
+    def stack(self, **kwargs):
+        return stack(self._parent, **kwargs)
+
 def reset_default_props(**kwargs):
     """Reset properties to initial cycle point"""
     global _DEFAULT_PROPS
