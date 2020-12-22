@@ -1757,18 +1757,10 @@ class IamDataFrame(object):
             df.dropna(), x=x, y=y, **kwargs)
         return ax
 
-    def stackplot(self, *args, **kwargs):
-        """Plot a stacked area chart of timeseries data
-
-        See `pyam.plotting.stackplot <plotting.html#pyam.plotting.stackplot>`_
-        for details.
-        """
-        return plotting.stackplot(self, *args, **kwargs)
-
     def stack_plot(self, *args, **kwargs):
-        """Deprecated, please use `IamDataFrame.stackplot()`"""
-        deprecation_warning('Please use `stackplot()`.')
-        return self.stackplot(*args, **kwargs)
+        """Deprecated, please use `IamDataFrame.plot.stack()`"""
+        deprecation_warning('Please use `IamDataFrame.plot.stack()`.')
+        return self.plot.stack(*args, **kwargs)
 
     def bar_plot(self, *args, **kwargs):
         """Deprecated, please use `IamDataFrame.plot.bar()`"""
