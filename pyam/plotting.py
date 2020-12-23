@@ -93,7 +93,7 @@ class PlotAccessor():
         raise NotImplementedError('Histogram plot not implemented yet!')
 
     def box(self, **kwargs):
-        return box(self._parent, kwargs)
+        return box(self._parent, **kwargs)
 
     def pie(self, **kwargs):
         return pie(self._parent, **kwargs)
@@ -245,31 +245,35 @@ def reshape_mpl(df, x, y, idx_cols, **kwargs):
     return df
 
 
-def pie_plot(df, value='value', category='variable',
-             ax=None, legend=False, title=True, cmap=None,
-             **kwargs):
-    """Plot data as a bar chart.
+def pie(df, value='value', category='variable', legend=False, title=True,
+        cmap=None, ax=None, **kwargs):
+    """Plot data as a pie chart.
 
     Parameters
     ----------
-    df : pd.DataFrame
-        Data to plot as a long-form data frame
+    df : :class:`pyam.IamDataFrame`, :class:`pandas.DataFrame`
+        Data to be plotted
     value : string, optional
         The column to use for data values
     category : string, optional
         The column to use for labels
-    ax : matplotlib.Axes, optional
     legend : bool, optional
         Include a legend
     title : bool or string, optional
         Display a default or custom title.
     cmap : string, optional
         A colormap to use.
+    ax : matplotlib.Axes, optional
     kwargs : Additional arguments to pass to the pd.DataFrame.plot() function
     """
+    # cast to DataFrame if necessary
+    # TODO: select only relevant meta columns
+    if not isinstance(df, pd.DataFrame):
+        df = df.as_pandas()
+
     for col in set(SORT_IDX) - set([category]):
         if len(df[col].unique()) > 1:
-            msg = 'Can not plot multiple {}s in pie_plot with value={},' +\
+            msg = 'Can not plot multiple {}s in a pie plot with value={},' +\
                 ' category={}'
             raise ValueError(msg.format(col, value, category))
 
@@ -308,10 +312,9 @@ def pie_plot(df, value='value', category='variable',
     return ax
 
 
-def stackplot(df, x='year', y='value', stack='variable', order=None,
-              ax=None, legend=True, title=True, cmap=None, total=None,
-              **kwargs):
-    """Plot stacked area chart of timeseries data
+def stack(df, x='year', y='value', stack='variable', order=None,
+          legend=True, title=True, total=None, ax=None, cmap=None, **kwargs):
+    """Plot a stacked area chart of timeseries data
 
     Parameters
     ----------
@@ -327,13 +330,13 @@ def stackplot(df, x='year', y='value', stack='variable', order=None,
          The order to plot the stack levels and the legend. If not specified,
          order by :meth:`run_control()['order'][\<stack\>] <pyam.run_control>`
          (where available) or alphabetical.
-    ax : matplotlib.Axes, optional
     legend : bool, optional
         Include a legend
     title : bool or string, optional
         Display a default or custom title.
+    ax : :class:`matplotlib.Axes`, optional
     cmap : string, optional
-        A colormap to use.
+        The name of a registered colormap.
     total : bool or dict, optional
         If True, plot a total line with default |pyam| settings. If a dict,
         then plot the total line using the dict key-value pairs as keyword
@@ -441,8 +444,8 @@ def stackplot(df, x='year', y='value', stack='variable', order=None,
 
 
 def bar(df, x='year', y='value', bars='variable', order=None, bars_order=None,
-        ax=None, orient='v', legend=True, title=True,
-        cmap=None, **kwargs):
+        orient='v', legend=True, title=True,
+        cmap=None, ax=None, **kwargs):
     """Plot data as a stacked or grouped bar chart
 
     Parameters
@@ -478,7 +481,7 @@ def bar(df, x='year', y='value', bars='variable', order=None, bars_order=None,
 
     for col in set(SORT_IDX) - set([x, bars]):
         if len(df[col].unique()) > 1:
-            msg = 'Can not plot multiple {}s in barplot with x={}, bars={}'
+            msg = 'Can not plot multiple {}s in bar plot with x={}, bars={}'
             raise ValueError(msg.format(col, x, bars))
 
     if ax is None:
@@ -532,14 +535,14 @@ def bar(df, x='year', y='value', bars='variable', order=None, bars_order=None,
     return ax
 
 
-def boxplot(df, y='value', x='year', by=None,
-            ax=None, legend=True, title=None, **kwargs):
+def box(df, y='value', x='year', by=None, legend=True, title=None, ax=None,
+        **kwargs):
     """ Plot boxplot of data using seaborn.boxplot
 
     Parameters
     ----------
-    df : pandas.DataFrame
-        Data to plot as a long-form data frame
+    df : :class:`pyam.IamDataFrame`, :class:`pandas.DataFrame`
+        Data to be plotted
     y : string, optional
         The column to use for y-axis values representing the distribution
         within the boxplot
@@ -547,9 +550,9 @@ def boxplot(df, y='value', x='year', by=None,
         The column to use for x-axis points, i.e. the number of boxes the plot
         will have
     by : string, optional
-        The column for grouping y-axis values at each x-axis point, i.e. a 3rd
-        dimension.
-        Data should be categorical, not a contiuous variable
+        The column for grouping y-axis values at each x-axis point,
+        i.e. a 3rd dimension. Data should be categorical, not a contiuous
+        variable.
     legend : bool, optional
         Include a legend
     title : bool or string, optional
@@ -557,6 +560,11 @@ def boxplot(df, y='value', x='year', by=None,
     ax : matplotlib.Axes, optional
     kwargs : Additional arguments to pass to the pd.DataFrame.plot()
     """
+    # cast to DataFrame if necessary
+    # TODO: select only relevant meta columns
+    if not isinstance(df, pd.DataFrame):
+        df = df.as_pandas()
+
     if by:
         rc = run_control()
         if 'palette' not in kwargs and 'color' in rc and by in rc['color']:
@@ -571,7 +579,7 @@ def boxplot(df, y='value', x='year', by=None,
     if ax is None:
         fig, ax = plt.subplots()
 
-    # plot
+    # Create the plot
     sns.boxplot(x=x, y=y, hue=by, data=df, ax=ax, **kwargs)
 
     # Add legend
@@ -732,7 +740,6 @@ def line(df, x='year', y='value', legend=None, title=True,
         The column to use for x-axis values
     y : string, optional
         The column to use for y-axis values
-    ax : matplotlib.Axes, optional
     legend : bool or dictionary, optional
         Add a legend. If a dictionary is provided, it will be used as keyword
         arguments in creating the legend.
@@ -747,8 +754,6 @@ def line(df, x='year', y='value', legend=None, title=True,
     linestyle : string, optional
         A valid matplotlib linestyle or column name. If a column name, common
         values will be provided the same linestyle.
-    cmap : string, optional
-        A colormap to use.
     fill_between : boolean or dict, optional
         Fill lines between minima/maxima of the 'color' argument. This can only
         be used if also providing a 'color' argument. If this is True, then
@@ -762,6 +767,9 @@ def line(df, x='year', y='value', legend=None, title=True,
         provided instead of defaults.
     rm_legend_label : string, list, optional
         Remove the color, marker, or linestyle label in the legend.
+    ax : matplotlib.Axes, optional
+    cmap : string, optional
+        A colormap to use.
     kwargs : Additional arguments to pass to the pd.DataFrame.plot() function
     """
     if ax is None:

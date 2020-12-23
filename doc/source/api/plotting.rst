@@ -32,6 +32,10 @@ There are three ways to use the |pyam| plotting library.
    where `df` is either an :class:`IamDataFrame`
    or a suitable :class:`pandas.DataFrame`.
 
+*Check out the* `Plotting Gallery`_ *for examples!*
+
+.. _`Plotting Gallery` : ../examples/index.html
+
 The RunControl configuration
 ----------------------------
 
@@ -69,6 +73,12 @@ Plotting functions
 .. autofunction:: pyam.plotting.line
 
 .. autofunction:: pyam.plotting.stack
+
+.. autofunction:: pyam.plotting.bar
+
+.. autofunction:: pyam.plotting.box
+
+.. autofunction:: pyam.plotting.scatter
 
 .. autofunction:: pyam.plotting.pie
 
