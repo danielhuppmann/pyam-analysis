@@ -89,6 +89,12 @@ class PlotAccessor():
         }
         # inherit the docstring from the plot function
         for name, func in PLOT_MAPPING.items():
+            def make_func():
+                def _function(*args, **kwargs):
+                    return func(self._parent, *args, **kwargs)
+                return _function
+
+            setattr(self, name, make_func())
             getattr(self, name).__func__.__doc__ = func.__doc__
 
     def __call__(self, kind='line', *args, **kwargs):
