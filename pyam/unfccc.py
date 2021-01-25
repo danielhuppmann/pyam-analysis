@@ -13,8 +13,10 @@ _READER = None
 
 def read_unfccc(party_code, mapping, gases=None, model='UNFCCC',
                 scenario='Data Inventory'):
-    """
+    """Read data from the UNFCCC Data Inventory
 
+    This function is a wrappter for the
+    :meth:`unfccc_di_api.UNFCCCApiReader.query`.
 
     Parameters
     ----------

@@ -47,6 +47,18 @@ See `this tutorial <../tutorials/iiasa_dbs.html>`_ for more information.
 
 .. autofunction:: read_iiasa
 
+Reading UNFCCC inventory data
+-----------------------------
+
+The package :class:`unfccc_di_api`
+(read the docs <https://unfccc-di-api.readthedocs.io/>`_)
+provides an interface to the UNFCCC Data Inventory API
+(`link <https://di.unfccc.int/time_series>`_).
+The |pyam| package uses this package to query inventory data and
+return the timeseries data directly as an :class:`IamDataFrame`.
+
+.. autofunction:: read_unfccc
+
 Connecting to other data resources
 ----------------------------------
 
