@@ -6,6 +6,7 @@ pyam: analysis & visualization <br /> of integrated-assessment scenarios
 [![conda](https://anaconda.org/conda-forge/pyam/badges/version.svg)](https://anaconda.org/conda-forge/pyam)
 [![latest](https://anaconda.org/conda-forge/pyam/badges/latest_release_date.svg)](https://anaconda.org/conda-forge/pyam)
 
+[![platform](https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey)](https://anaconda.org/conda-forge/pyam)
 [![pytest-38](https://github.com/IAMconsortium/pyam/workflows/pytest%20(3.8)/badge.svg?branch=master)](https://github.com/IAMconsortium/pyam/actions?query=workflow%3A%22pytest+%283.8%29%22+branch%3Amaster)
 [![pytest-37](https://github.com/IAMconsortium/pyam/workflows/pytest%20(3.7)/badge.svg?branch=master)](https://github.com/IAMconsortium/pyam/actions?query=workflow%3A%22pytest+%283.7%29%22+branch%3Amaster)
 [![codecov](https://codecov.io/gh/IAMconsortium/pyam/branch/master/graph/badge.svg)](https://codecov.io/gh/IAMconsortium/pyam)

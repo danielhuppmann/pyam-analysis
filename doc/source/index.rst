@@ -5,7 +5,7 @@ Release v\ |version|.
 
 |license| |pypi| |conda| |latest|
 
-|pytest-38| |pytest-37| |codecov| |rtd|
+|platform| |pytest-38| |pytest-37| |codecov| |rtd|
 
 |joss| |doi|
 
@@ -19,6 +19,9 @@ Release v\ |version|.
    :target: https://anaconda.org/conda-forge/pyam
 
 .. |latest| image:: https://anaconda.org/conda-forge/pyam/badges/latest_release_date.svg
+   :target: https://anaconda.org/conda-forge/pyam
+
+.. |platform| image:: https://img.shields.io/badge/platform-windows%20%7C%20macos%20%7C%20linux-lightgrey
    :target: https://anaconda.org/conda-forge/pyam
 
 .. |pytest-38| image:: https://github.com/IAMconsortium/pyam/workflows/pytest%20(3.8)/badge.svg?branch=master
